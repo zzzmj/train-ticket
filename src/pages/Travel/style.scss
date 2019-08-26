@@ -1,0 +1,35 @@
+.travel {
+    max-width: 700px;
+    &-img {
+        height: 90px;
+        width: 100%;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        background-image: url('/assets/image/train.png')
+    }
+    .travel-form {
+        padding: 10px 20px;
+        margin: 0 auto;
+        background: #fff;
+        &--submit {
+            margin-top: 16px;
+            button {
+                display: inline-block;
+                height: 44px;
+                line-height: 44px;
+                border: 0;
+                color: #fff;
+                font-size: 18px;
+                width: 100%;
+                display: block;
+                border-radius: 3px;
+                margin: 0 auto;
+                text-align: center;
+                background-color: #ff9a14;
+                -webkit-tap-highlight-color: #ff8c00;
+                box-shadow: 0 2px 8px rgba(255,154,20,.5);
+            }
+        }
+    }
+
+}

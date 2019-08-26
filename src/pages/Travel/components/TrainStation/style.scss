@@ -1,0 +1,29 @@
+.train-station {
+    display: flex;
+    height: 55px;
+    line-height: 55px;
+    &--from, &--to {
+        width: 43%;
+        padding: 0 5px;
+        font-size: 22px;
+        border-bottom: 1px solid #eee;
+    }
+    &--to {
+        text-align: end;
+    }
+    &--icon {
+        width: 14%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        i {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            background-image: url('/assets/image/train-index-jb.png');
+            background-repeat: no-repeat;
+            background-size: 80px 120px;
+            background-position: -40px 0px;
+        }
+    }
+}

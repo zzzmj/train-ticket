@@ -6,21 +6,31 @@ import React, {
 import Header from '../Header'
 import { API } from '../../utils/http'
 import './style.scss'
+import CardView from './compontes/cardView';
+import ListView from './compontes/listView';
 
 interface IProps {
     visible: boolean
     onBack: () => void
 }
 
+const historyCitys = ["北京","上海"]
+const popularCitys = ["北京","上海","杭州","广州","南京","成都","西安","郑州","重庆","合肥","汉口","武汉","长沙","武昌","太原","苏州","厦门","南昌","沈阳","天津","深圳",]
+// const searchCitys = ["杭州","广州","南京","成都","西安","郑州","重庆","合肥"]
+
 const CitySeletor = (props: IProps) => {
     const [stationList, setStationList] = useState<any>('')
     const [searchKey, setSearchKey] = useState<string>('')
+    const [searchCitys, setSearchCitys] = useState<Array<any[]>>([])
+    const [showSearchCitys, setShowSearchCitys] = useState<boolean>(false)
     const { visible } = props
 
     useEffect(() => {
         const str = localStorage.getItem('ALL_STATION')
         if (str) {
-            setStationList(JSON.parse(str))
+            const { data } = JSON.parse(str)
+            const { allStations } = data
+            setStationList(allStations)
         } else {
             API.getAllStation().then((res) => {
                 localStorage.setItem('ALL_STATION', JSON.stringify(res))
@@ -38,13 +48,30 @@ const CitySeletor = (props: IProps) => {
 
     const handleSearchChange = (e: any) => {
         const value = e.target.value
+        const res: Array<Array<string | number>> = []
+        stationList.forEach((station: Array<string>, index: number) => {
+            const [name, pinYin, pinYinMin] = station
+            if (
+                name.indexOf(value) === 0 ||
+                pinYin.indexOf(value) === 0 ||
+                pinYinMin.indexOf(value) === 0
+            ) {
+                res.push(station)
+            }
+        })
+        if (value.trim()) {
+            setShowSearchCitys(true)
+        } else {
+            setShowSearchCitys(false)
+        }
         setSearchKey(value)
+        setSearchCitys(res)
     }
 
     return visible ? (
         <div className='city-selector'>
             <Header onBack={handleBack} title='到达' />
-            <div className='city-selector__input'>
+            <div className='city-selector--input'>
                 <input 
                     type='text' 
                     value={searchKey}
@@ -52,44 +79,18 @@ const CitySeletor = (props: IProps) => {
                     onChange={handleSearchChange}
                 />
             </div>
-
-            <section>
-
-            </section>
-            <section className='city-selector__history'>
-                <h4>历史记录</h4>
-                <ul onClick={handleClick}>
-                    <li>北京</li>
-                    <li>上海</li>
-                </ul>
-            </section>
-
-            <section className='city-selector__popular'>
-                <h4>热门城市</h4>
-                <ul onClick={handleClick}>
-                    <li>北京</li>
-                    <li>上海</li>
-                    <li>杭州</li>
-                    <li>广州</li>
-                    <li>南京</li>
-                    <li>成都</li>
-                    <li>西安</li>
-                    <li>郑州</li>
-                    <li>重庆</li>
-                    <li>合肥</li>
-                    <li>汉口</li>
-                    <li>武汉</li>
-                    <li>长沙</li>
-                    <li>武昌</li>
-                    <li>太原</li>
-                    <li>苏州</li>
-                    <li>厦门</li>
-                    <li>南昌</li>
-                    <li>沈阳</li>
-                    <li>天津</li>
-                    <li>深圳</li>
-                </ul>
-            </section>
+            {showSearchCitys ? (
+                <ListView
+                    searchCitys={searchCitys}
+                    onClick={handleClick}
+                />
+            ) : (
+                <CardView 
+                    historyCitys={historyCitys}
+                    popularCitys={popularCitys}
+                    onClick={handleClick}
+                />
+            )}
         </div>
     ) : null
 }

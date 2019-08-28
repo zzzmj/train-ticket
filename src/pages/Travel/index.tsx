@@ -1,5 +1,5 @@
 import React, {
-    useCallback, useState
+    useState,
 } from 'react'
 import { connect } from 'react-redux'
 import * as Actions from '../../redux/actions'
@@ -10,26 +10,42 @@ import CitySelector from '../../components/CitySelector'
 import './style.scss'
 
 interface IProps {
-    from: string
-    to: string
+    from: Array<string | number>
+    to: Array<string | number>
     handleExchangeFromTo: () => void
+    handleSetFrom: (station: Array<string | number>) => void
+    handleSetTo: (station: Array<string | number>) => void
 }
 
 const Travel = (props: IProps) => {
-    const [visible, setCityVisible] = useState<boolean>(false)
     const { from, to } = props
+    const [visible, setCityVisible] = useState<boolean>(false)
+    const [selectFromOrTo, setSelectFromOrTo] = useState<string>()
 
-    const handleExchangeFromTo = useCallback(() => {
+    const handleExchangeFromTo = () => {
         props.handleExchangeFromTo()
-    }, [])
+    }
 
-    const handleStationClick = useCallback(() => {
+    const handleStationClick = (flag: string) => {
+        // 确定是出发地还是目的地，并弹出城市选择组件
+        setSelectFromOrTo(flag)
         setCityVisible(true)
-    }, [])
+    }
 
-    const handleCityBack = useCallback(() => {
+    const handleCityBack = () => {
         setCityVisible(false)
-    }, [])
+    }
+
+    const handleCitySelect = (station: Array<string | number>) => {
+        if (selectFromOrTo === 'from') {
+            console.log('起始地')
+            props.handleSetFrom(station)
+        } else {
+            console.log('到达地')
+            props.handleSetTo(station)
+        }
+        setCityVisible(false)
+    }
 
     return (
         <div className='travel'>
@@ -51,9 +67,11 @@ const Travel = (props: IProps) => {
                     <button>查询</button>
                 </div>
             </div>
-            <CitySelector 
+            <p>{selectFromOrTo}</p>
+            <CitySelector
                 visible={visible}
                 onBack={handleCityBack}
+                onSelect={handleCitySelect}
             />
         </div>
     )
@@ -71,6 +89,12 @@ const mapDispatchToProps = (dispatch: any) => {
     return {
         handleExchangeFromTo: () => {
             dispatch(Actions.exchangeFromTo())
+        },
+        handleSetFrom: (station: Array<string | number>) => {
+            dispatch(Actions.setFrom(station))
+        },
+        handleSetTo: (station: Array<string | number>) => {
+            dispatch(Actions.setTo(station))
         }
     }
 }

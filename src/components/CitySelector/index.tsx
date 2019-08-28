@@ -1,5 +1,4 @@
 import React, { 
-    useCallback, 
     useEffect, 
     useState 
 } from 'react'
@@ -12,11 +11,11 @@ import ListView from './compontes/listView';
 interface IProps {
     visible: boolean
     onBack: () => void
+    onSelect: (station: Array<string | number>) => void
 }
 
 const historyCitys = ["北京","上海"]
 const popularCitys = ["北京","上海","杭州","广州","南京","成都","西安","郑州","重庆","合肥","汉口","武汉","长沙","武昌","太原","苏州","厦门","南昌","沈阳","天津","深圳",]
-// const searchCitys = ["杭州","广州","南京","成都","西安","郑州","重庆","合肥"]
 
 const CitySeletor = (props: IProps) => {
     const [stationList, setStationList] = useState<any>('')
@@ -38,19 +37,22 @@ const CitySeletor = (props: IProps) => {
         }
     }, [])
 
-    const handleBack = useCallback(() => {
+    const handleBack = () => {
         props.onBack()
-    }, [])
+        handleReset()
+    }
 
-    const handleClick = useCallback((e) => {
-        console.log('e', e.target)
-    }, [])
+    const handleClick = (station: Array<string | number>) => {
+        props.onSelect(station)
+        handleReset()
+    }
 
     const handleSearchChange = (e: any) => {
         const value = e.target.value
         const res: Array<Array<string | number>> = []
         stationList.forEach((station: Array<string>, index: number) => {
-            const [name, pinYin, pinYinMin] = station
+            const [name, , pinYin, pinYinMin] = station
+            // 匹配三种格式
             if (
                 name.indexOf(value) === 0 ||
                 pinYin.indexOf(value) === 0 ||
@@ -66,6 +68,11 @@ const CitySeletor = (props: IProps) => {
         }
         setSearchKey(value)
         setSearchCitys(res)
+    }
+
+    const handleReset = () => {
+        setSearchKey('')
+        setShowSearchCitys(false)
     }
 
     return visible ? (

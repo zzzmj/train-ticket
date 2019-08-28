@@ -8,12 +8,12 @@ export const ACTION_SET_CITYDATA = 'SET_CITYDATA'
 export const ACTION_SET_ISLOADING = 'SET_ISLOADING'
 export const ACTION_SET_HIGHSPEED = 'SET_HIGHSPEED'
 
-export const setFrom = (from: string) => ({
+export const setFrom = (from: Array<string | number>) => ({
     type: ACTION_SET_FROM,
     payload: from
 })
 
-export const setTo = (to: string) => ({
+export const setTo = (to: Array<string | number>) => ({
     type: ACTION_SET_TO,
     payload: to
 })

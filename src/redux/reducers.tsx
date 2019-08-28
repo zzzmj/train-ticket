@@ -15,8 +15,6 @@ interface IState {
 }
 
 const reducers = (state: any, action: any) => {
-    console.log('state', state)
-    console.log('action', action)
     const { type, payload } = action
     switch (type) {
         case ACTION_SET_FROM:

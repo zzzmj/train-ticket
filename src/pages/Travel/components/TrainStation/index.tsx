@@ -2,35 +2,36 @@ import React from 'react'
 import './style.scss'
 
 interface IProps {
-    from: string
-    to: string
+    from: Array<string | number>
+    to: Array<string | number>
     onClick: Function
     exchangeFromTo: Function
 }
 
 const TrainStation = (props: IProps) => {
     const { from, to, exchangeFromTo } = props
-
-    const handleClick = () => {
-        props.onClick()
+    const [fromName] = from
+    const [toName] = to
+    const handleClick = (flag: string) => {
+        props.onClick(flag)
     }
 
     return (
         <div className="train-station">
             <dd 
                 className="train-station--from"
-                onClick={() => handleClick()}
+                onClick={() => handleClick('from')}
             >
-                {from}
+                {fromName}
             </dd>
             <dt className="train-station--icon" onClick={() => exchangeFromTo()}>
                 <i></i>
             </dt>
             <dd 
                 className="train-station--to"
-                onClick={() => handleClick()}
+                onClick={() => handleClick('to')}
             >
-                {to}
+                {toName}
             </dd>
         </div>
     )

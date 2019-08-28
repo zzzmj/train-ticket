@@ -10,19 +10,26 @@ const ListView = (props: IProps) => {
     const { searchCitys } = props
 
     const renderSearchCitys = (data: Array<Array<string | number>>) => {
-        return data.map((item: Array<string | number>, index) => {
-            
-            return <li key={index}>{item}</li>
+        return data.map((station: Array<string | number>) => {
+            const [name, cityCode,] = station
+            return (
+                <li
+                    key={cityCode}
+                    onClick={() => handleClick(station)}
+                >
+                    {name}
+                </li>
+            )
         })
     }
 
-    const handleClick = (e: any) => {
-        props.onClick(e)
+    const handleClick = (station: Array<string | number>) => {
+        props.onClick(station)
     }
 
     return (
         <div className="city-selector--list">
-            <ul onClick={handleClick}>
+            <ul>
                 {renderSearchCitys(searchCitys)}
             </ul>
         </div>

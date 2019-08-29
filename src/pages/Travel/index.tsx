@@ -47,6 +47,10 @@ const Travel = (props: IProps) => {
         setCityVisible(false)
     }
 
+    const handleSubmit = () => {
+        console.log('from to', from ,to)
+    }
+
     return (
         <div className='travel'>
             <div className="travel-img" />
@@ -64,10 +68,9 @@ const Travel = (props: IProps) => {
                     <HighSpeed />
                 </div>
                 <div className="travel-form--submit">
-                    <button>查询</button>
+                    <button onClick={handleSubmit} >查询</button>
                 </div>
             </div>
-            <p>{selectFromOrTo}</p>
             <CitySelector
                 visible={visible}
                 onBack={handleCityBack}

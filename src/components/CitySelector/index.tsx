@@ -4,18 +4,16 @@ import React, {
 } from 'react'
 import Header from '../Header'
 import { API } from '../../utils/http'
-import './style.scss'
 import CardView from './compontes/cardView';
 import ListView from './compontes/listView';
+import { historyCitys, popularCitys } from './conf'
+import './style.scss'
 
 interface IProps {
     visible: boolean
     onBack: () => void
     onSelect: (station: Array<string | number>) => void
 }
-
-const historyCitys = ["北京","上海"]
-const popularCitys = ["北京","上海","杭州","广州","南京","成都","西安","郑州","重庆","合肥","汉口","武汉","长沙","武昌","太原","苏州","厦门","南昌","沈阳","天津","深圳",]
 
 const CitySeletor = (props: IProps) => {
     const [stationList, setStationList] = useState<any>('')

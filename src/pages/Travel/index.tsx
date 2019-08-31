@@ -7,19 +7,24 @@ import TrainStation from './components/TrainStation';
 import DepartDate from './components/DepartDate';
 import HighSpeed from './components/HighSpeed';
 import CitySelector from '../../components/CitySelector'
+import DateSelector from '../../components/DateSelector';
+import { formatTime } from '../../utils/tool'
 import './style.scss'
 
 interface IProps {
     from: Array<string | number>
     to: Array<string | number>
+    departTime: string
     handleExchangeFromTo: () => void
     handleSetFrom: (station: Array<string | number>) => void
     handleSetTo: (station: Array<string | number>) => void
+    handleSetDepartTime: (dateString: string) => void
 }
 
 const Travel = (props: IProps) => {
-    const { from, to } = props
-    const [visible, setCityVisible] = useState<boolean>(false)
+    const { from, to, departTime} = props
+    const [cityVisible, setCityVisible] = useState<boolean>(false)
+    const [dateVisible, setDateVisible] = useState<boolean>(false)
     const [selectFromOrTo, setSelectFromOrTo] = useState<string>()
 
     const handleExchangeFromTo = () => {
@@ -32,10 +37,10 @@ const Travel = (props: IProps) => {
         setCityVisible(true)
     }
 
-    const handleCityBack = () => {
-        setCityVisible(false)
+    const handleDateClick = () => {
+        setDateVisible(true)
     }
-
+    
     const handleCitySelect = (station: Array<string | number>) => {
         if (selectFromOrTo === 'from') {
             console.log('起始地')
@@ -46,8 +51,18 @@ const Travel = (props: IProps) => {
         }
         setCityVisible(false)
     }
+    
+    const handleDateSelct = (date: Date) => {
+        props.handleSetDepartTime(formatTime(date))
+    }
+    
+    const handleBack = () => {
+        setCityVisible(false)
+        setDateVisible(false)
+    }
 
     const handleSubmit = () => {
+        // 拿到出发地
         console.log('from to', from ,to)
     }
 
@@ -62,8 +77,9 @@ const Travel = (props: IProps) => {
                         onClick={handleStationClick}
                         exchangeFromTo={handleExchangeFromTo}
                     />
-                    <DepartDate 
-                        
+                    <DepartDate
+                        time={departTime}
+                        onClick={handleDateClick}
                     />
                     <HighSpeed />
                 </div>
@@ -72,19 +88,25 @@ const Travel = (props: IProps) => {
                 </div>
             </div>
             <CitySelector
-                visible={visible}
-                onBack={handleCityBack}
+                visible={cityVisible}
+                onBack={handleBack}
                 onSelect={handleCitySelect}
+            />
+            <DateSelector
+                visible={dateVisible}
+                onBack={handleBack}
+                onSelect={handleDateSelct}
             />
         </div>
     )
 }
 
 const mapStateToProps = (state: any) => {
-    const { from, to } = state
+    const { from, to, departTime } = state
     return {
         from,
-        to
+        to,
+        departTime
     }
 }
 
@@ -98,6 +120,9 @@ const mapDispatchToProps = (dispatch: any) => {
         },
         handleSetTo: (station: Array<string | number>) => {
             dispatch(Actions.setTo(station))
+        },
+        handleSetDepartTime: (dateString: string) => {
+            dispatch(Actions.setDepartTime(dateString))
         }
     }
 }

@@ -1,17 +1,13 @@
 import {
     ACTION_SET_FROM,
     ACTION_SET_TO,
+    ACTION_SET_DEPART_TIME
 } from './actions';
 
 interface IState {
     from: string,
     to: string,
-    isCitySelectorVisible: boolean,
-    isDateSelectorVisible: boolean,
-    curSeletorLeftCity: boolean,
-    cityData: any,
-    isLoading: boolean,
-    highSpeed: boolean,
+
 }
 
 const reducers = (state: any, action: any) => {
@@ -26,6 +22,11 @@ const reducers = (state: any, action: any) => {
             return {
                 ...state,
                 to: payload
+            }
+        case ACTION_SET_DEPART_TIME:
+            return {
+                ...state,
+                departTime: payload
             }
     }
     return state

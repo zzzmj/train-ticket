@@ -1,14 +1,9 @@
 import {
     ACTION_SET_FROM,
     ACTION_SET_TO,
-    ACTION_SET_DEPART_TIME
+    ACTION_SET_DEPART_TIME,
+    ACTION_SET_TICKET_DATA
 } from './actions';
-
-interface IState {
-    from: string,
-    to: string,
-
-}
 
 const reducers = (state: any, action: any) => {
     const { type, payload } = action
@@ -27,6 +22,16 @@ const reducers = (state: any, action: any) => {
             return {
                 ...state,
                 departTime: payload
+            }
+        case ACTION_SET_TICKET_DATA:
+            const { key, value } = payload
+            const ticket = state['ticketData'] || {}
+            return {
+                ...state,
+                ticketData: {
+                    ...ticket,
+                    [key]: value
+                }
             }
     }
     return state

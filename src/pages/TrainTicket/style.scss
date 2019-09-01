@@ -1,0 +1,127 @@
+.train-ticket--date {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    line-height: 40px;
+    padding: 5px 20px;
+    background: #0086f6;
+    color: #fff;
+    > div {
+        font-size: 14px;
+        line-height: 30px;
+        font-family: Arial, Helvetica, sans-serif
+    }
+}
+
+.train-ticket--content {
+    background: #fff;
+    margin-top: 8px;
+    padding: 17px 15px 14px 15px;
+    &__card {
+        display: flex;
+        .from {
+            width: 26%;
+            strong {
+                font-size: 20px;
+                color: #0086f6;
+            }
+            p {
+                line-height: 27px;
+                font-size: 14px;
+                color: #222;
+            }
+        }
+        .spend-time {
+            width: 21%;
+            text-align: center;
+            p {
+                font-size: 12px;
+            }
+            p:last-child {
+                line-height: 27px;
+            }
+            > div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                i {
+                    width: 8px;
+                    height: 8px;
+                    background: #e5e5e5;
+                    border-radius: 50%;
+                }
+                span {
+                    display: block;
+                    flex: 1;
+                    height: 2px;
+                    background: #f0f0f0;
+                }
+            }
+
+            .train-id {
+                position: relative;
+                padding-right: 15px;
+                i {
+                    position: absolute;
+                    top: 5px;
+                    width: 20px;
+                    background: url(/assets/image/train-id.png);
+                    background-repeat: no-repeat;
+                    height: 14px;
+                    display: inline-block;
+                    background-size: 100%;
+                }
+            }
+        }
+        .to {
+            width: 26%;
+            text-align: right;
+            p:first-child {
+                line-height: 22px;
+                font-size: 18px;
+            }
+
+            p:last-child {
+                line-height: 27px;
+                font-size: 14px;
+                color: #222;
+            }
+        }
+        .price {
+            width: 27%;
+            text-align: right;
+            font-size: 12px;
+            color: #999999;
+            span {
+                color: #f60;
+                font-size: 12px;
+            }
+            strong {
+                color: #f60;
+                font-size: 20px;
+            }
+        }
+        p {
+            margin: 0px;
+        }
+    }
+    &__ticket {
+        margin-top: 5px;
+        display: flex;
+        li {
+            font-size: 12px;
+            color: #666666;
+        }
+        li:first-child {
+            width: 25%;
+        }
+        li:last-child {
+            width: 27%;
+            text-align: right;
+        }
+        li:nth-child(2) {
+            width: 21%;
+            text-align: center;
+        }
+    }
+}

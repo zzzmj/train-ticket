@@ -7,6 +7,10 @@ body, html {
     background: #f5f5f5;
 }
 
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 dd, dt, h1, h2, h3, h4, ul {
     margin: 0;
 }

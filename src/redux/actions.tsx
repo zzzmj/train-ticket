@@ -2,8 +2,7 @@ export const ACTION_SET_FROM = 'SET_FROM'
 export const ACTION_SET_TO = 'SET_TO'
 export const ACTION_SET_EXCHANGEFROMTO = 'SET_EXCHANGEFROMTO'
 export const ACTION_SET_DEPART_TIME = 'DEPART_TIME'
-
-
+export const ACTION_SET_TICKET_DATA = 'TICKET_DATA'
 
 export const setFrom = (from: Array<string | number>) => ({
     type: ACTION_SET_FROM,
@@ -26,4 +25,9 @@ export const exchangeFromTo = () => {
 export const setDepartTime = (dateString: string) => ({
     type: ACTION_SET_DEPART_TIME,
     payload: dateString
+})
+
+export const setTicketData = (ticket: { key: string; value: JSON }) => ({
+    type: ACTION_SET_TICKET_DATA,
+    payload: ticket
 })

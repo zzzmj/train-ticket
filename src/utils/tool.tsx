@@ -15,3 +15,8 @@ export const formatTime = (date: Date) => {
     }
     return `${y}-${ms}-${ds}`
 }
+
+export const getWeekDay = (format: string) => {
+    const arr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+    return arr[new Date(format).getDay()]
+}

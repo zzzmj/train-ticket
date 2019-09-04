@@ -4,13 +4,23 @@
     height: 40px;
     line-height: 40px;
     padding: 5px 20px;
+    margin-top: 44px;
     background: #0086f6;
     color: #fff;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 999;
     > div {
         font-size: 14px;
         line-height: 30px;
         font-family: Arial, Helvetica, sans-serif
     }
+}
+
+.train-ticket--header {
+    height: 84px;
 }
 
 .train-ticket--content {
@@ -122,6 +132,39 @@
         li:nth-child(2) {
             width: 21%;
             text-align: center;
+        }
+    }
+}
+
+.train-ticket--content:first-child {
+    margin-top: 84px;
+}
+
+.train-ticket--footer {
+    height: 45px;
+    margin-top: 8px;
+}
+
+.train-ticket--filter {
+    height: 45px;
+    line-height: 45px;
+    width: 100%;
+    background: rgba(40,56,71,.9);
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    &__list {
+        display: flex;
+        li {
+            font-size: 14px;
+            width: 25%;
+            text-align: center;
+            color: hsla(0,0%,100%,.9);
+        }
+
+        .current {
+            background: #283847;
+            color: #0086f6;
         }
     }
 }

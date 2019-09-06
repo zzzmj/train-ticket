@@ -1,6 +1,14 @@
+const headers = new Headers({
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+})
+
 export const get = (url: string) => {
     return new Promise((resolve, reject) => {
-        fetch(url).then(res => {
+        fetch(url, {
+            method: 'GET',
+            headers,
+        }).then(res => {
             return res.json()
         }).then(data => {
             return resolve(data)
@@ -14,9 +22,7 @@ export const post = (url: string, params: any) => {
     return new Promise((resolve, reject) => {
         fetch(url, {
             method:'POST',
-            headers:{
-                'Content-Type': 'application/json'
-            },
+            headers,
             body: JSON.stringify(params)
         }).then(res => {
             return res.json()

@@ -1,3 +1,6 @@
+import { API } from "../utils/http";
+
+
 export const ACTION_SET_FROM = 'SET_FROM'
 export const ACTION_SET_TO = 'SET_TO'
 export const ACTION_SET_EXCHANGEFROMTO = 'SET_EXCHANGEFROMTO'
@@ -27,7 +30,35 @@ export const setDepartTime = (dateString: string) => ({
     payload: dateString
 })
 
-export const setTicketData = (ticket: { key: string; value: JSON }) => ({
-    type: ACTION_SET_TICKET_DATA,
-    payload: ticket
-})
+export const setTicketData = () => {
+    return (dispatch: any, getState: any) => {
+        const { from, to, departTime } = getState()
+        const [, fromCode] = from
+        const [, toCode] = to
+        const key = `${fromCode}${toCode}${departTime}`
+
+        const { ticketData } = getState()
+
+        // 如果key存在了就不重新发送请求
+        if (ticketData[key]) {
+            return null;
+        }
+
+        const ticketParams = {
+            from_station: fromCode,
+            to_station: toCode,
+            depart_time: departTime,
+        }
+        API.getTrainList(ticketParams).then((res: any) => {
+            const { data } = res
+            return dispatch({
+                type: ACTION_SET_TICKET_DATA,
+                payload: {
+                    key,
+                    value: data
+                }
+            })
+        })
+        
+    }
+}

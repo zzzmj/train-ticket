@@ -26,6 +26,7 @@ const reducers = (state: any, action: any) => {
         case ACTION_SET_TICKET_DATA:
             const { key, value } = payload
             const ticket = state['ticketData'] || {}
+            console.log('payload', payload)
             return {
                 ...state,
                 ticketData: {

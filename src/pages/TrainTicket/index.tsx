@@ -1,31 +1,43 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import * as Actions from '../../redux/actions'
 import { connect } from 'react-redux'
 import Header from '../../components/Header'
 import DateSelector from '../../components/DateSelector'
 import { RouteComponentProps } from 'react-router';
-import { response } from './conf'
-import { getWeekDay } from '../../utils/tool'
+import { 
+    getWeekDay, 
+    formatTime,
+    getPreDay,
+    getNextDay,
+} from '../../utils/tool'
 import './style.scss'
+
 
 interface IProps extends RouteComponentProps {
     from: Array<string | number>
     to: Array<string | number>
     departTime: string
     ticketData: any
+    handleSetTicketData: () => void
+    handleSetDepartTime: (dateString: string) => void
 }
 
 const TrainTicket = (props: IProps) => {
     const { 
-        from, 
-        to, 
+        from,
+        to,
         departTime,
+        ticketData
     } = props
-    const [dataSource, setDataSource] = useState<any>(response['data'])
     const [dateVisible, setDateVisible] = useState<boolean>(false)
     const [fromStation, fromCode] = from
     const [toStation, toCode] = to
+    
+
+    useEffect(() => {
+        props.handleSetTicketData()
+    }, [from, to, departTime])
 
     /* 头部返回，日期相关事件 */
     const handleBack = () => {
@@ -41,7 +53,18 @@ const TrainTicket = (props: IProps) => {
     }
 
     const handleDateSelct = (date: Date) => {
-        console.log('date', date)
+        // 更新车票请求参数
+        props.handleSetDepartTime(formatTime(date))
+    }
+
+    const handlePreDayClick = () => {
+        const preDay = getPreDay(departTime)
+        props.handleSetDepartTime(preDay)
+    }
+
+    const handleNextDayClick = () => {
+        const nextDay = getNextDay(departTime)
+        props.handleSetDepartTime(nextDay)
     }
 
     /* 底部过滤事件 */
@@ -77,9 +100,8 @@ const TrainTicket = (props: IProps) => {
 
     const renderTrainTicketList = () => {
         const key = `${fromCode}${toCode}${departTime}`
-        // const data = props.ticketData[key] || []
-        const { data } = response
-        return data.map((item: any) => {
+        const dataSource = ticketData[key] || []
+        return dataSource.map((item: any) => {
             const {
                 train_id,
                 start_times,
@@ -91,7 +113,7 @@ const TrainTicket = (props: IProps) => {
             } = item
 
             return (
-                <div className="train-ticket--content">
+                <div key={train_id} className="train-ticket--content">
                     <ul className="train-ticket--content__card">
                         <li className="from">
                             <strong>{start_times}</strong>
@@ -132,32 +154,36 @@ const TrainTicket = (props: IProps) => {
 
     return (
         <div className="train-ticket">
-            <div className="train-ticket--header">
-                <Header
-                    title={`${fromStation} ⇀ ${toStation}`}
-                    onBack={handleBack}
-                />
-                <div className="train-ticket--date">
-                    <div>前一天</div>
-                    <div onClick={hanldeDateClick}>
-                        <i />
-                        <span>{departTime.slice(5)} </span>
-                        <span>{getWeekDay(departTime)}</span>
+            {!dateVisible && (
+                <div className="train-ticket--wrap">
+                    <div className="train-ticket--header">
+                        <Header
+                            title={`${fromStation} ⇀ ${toStation}`}
+                            onBack={handleBack}
+                        />
+                        <div className="train-ticket--date">
+                            <div onClick={handlePreDayClick}>前一天</div>
+                            <div onClick={hanldeDateClick}>
+                                <i />
+                                <span>{departTime.slice(5)} </span>
+                                <span>{getWeekDay(departTime)}</span>
+                            </div>
+                            <div onClick={handleNextDayClick}>后一天</div>
+                        </div>
                     </div>
-                    <div>后一天</div>
+                    {renderTrainTicketList()}
+                    <div className="train-ticket--footer">
+                    <div className="train-ticket--filter">
+                        <ul className="train-ticket--filter__list">
+                            <li onClick={handleFilter}>筛选</li>
+                            <li onClick={handleFilterDepartTime}>出发(早-晚)</li>
+                            <li onClick={handleFilterSpendTime}>耗时(短-长)</li>
+                            <li onClick={handleFilterPrice}>价格(低-高)</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            {renderTrainTicketList()}
-            <div className="train-ticket--footer">
-                <div className="train-ticket--filter">
-                    <ul className="train-ticket--filter__list">
-                        <li onClick={handleFilter}>筛选</li>
-                        <li onClick={handleFilterDepartTime}>出发(早-晚)</li>
-                        <li onClick={handleFilterSpendTime}>耗时(短-长)</li>
-                        <li onClick={handleFilterPrice}>价格(低-高)</li>
-                    </ul>
                 </div>
-            </div>
+            )}
 
             <DateSelector
                 visible={dateVisible}
@@ -188,6 +214,9 @@ const mapDispatchToProps = (dispatch: any) => {
         },
         handleSetDepartTime: (dateString: string) => {
             dispatch(Actions.setDepartTime(dateString))
+        },
+        handleSetTicketData: () => {
+            dispatch(Actions.setTicketData())
         }
     }
 }

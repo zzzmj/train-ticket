@@ -10,9 +10,8 @@ import HighSpeed from './components/HighSpeed';
 import CitySelector from '../../components/CitySelector'
 import DateSelector from '../../components/DateSelector';
 import { formatTime } from '../../utils/tool'
-import { API } from '../../utils/http'
-import './style.scss'
 import { RouteComponentProps } from 'react-router';
+import './style.scss'
 
 interface IProps extends RouteComponentProps {
     from: Array<string | number>
@@ -67,24 +66,25 @@ const Travel = (props: IProps) => {
 
     const handleSubmit = () => {
         // 拿到出发地
-        const [, fromCode] = from
-        const [, toCode] = to
-        console.log('from to', from ,to, departTime)
-        const req = {
-            from_station: fromCode,
-            to_station: toCode,
-            depart_time: departTime
-        }
-        API.getTrainList(req).then((res: any) => {
-            const { data } = res
-            // 以起始地和日期作为车票对象索引
-            const key = `${fromCode}${toCode}${departTime}`
-            props.handleSetTicketData({
-                key,
-                value: data
-            })
-            props.history.push('/train/list')
-        })
+        props.history.push('/train/list')
+        // const [, fromCode] = from
+        // const [, toCode] = to
+        // console.log('from to', from ,to, departTime)
+        // const req = {
+        //     from_station: fromCode,
+        //     to_station: toCode,
+        //     depart_time: departTime
+        // }
+        // API.getTrainList(req).then((res: any) => {
+        //     const { data } = res
+        //     // 以起始地和日期作为车票对象索引
+        //     const key = `${fromCode}${toCode}${departTime}`
+        //     props.handleSetTicketData({
+        //         key,
+        //         value: data
+        //     })
+            
+        // })
     }
 
     return (
@@ -145,9 +145,6 @@ const mapDispatchToProps = (dispatch: any) => {
         handleSetDepartTime: (dateString: string) => {
             dispatch(Actions.setDepartTime(dateString))
         },
-        handleSetTicketData: (ticket: { key: string, value: JSON }) => {
-            dispatch(Actions.setTicketData(ticket))
-        }
     }
 }
 

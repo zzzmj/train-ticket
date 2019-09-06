@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom';
+// const Travel = lazy(() => impor)
 import Travel from '../pages/Travel'
 import TrainTicket from '../pages/TrainTicket'
 
